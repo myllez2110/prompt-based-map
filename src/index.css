@@ -5,10 +5,19 @@
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #f8fafc;
+  background-color: transparent;
 }
 
 .leaflet-control-attribution {
   background-color: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(4px);
+}
+
+.dark .leaflet-control-attribution {
+  background-color: rgba(17, 24, 39, 0.9) !important;
+  color: white;
+}
+
+.dark .leaflet-control-attribution a {
+  color: #60A5FA;
 }
