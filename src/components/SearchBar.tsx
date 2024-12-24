@@ -12,9 +12,14 @@ export const SearchBar = () => {
     
     try {
       await fetchStatisticalData(searchValue);
+      setSearchValue(''); // Reset the search value after successful search
     } catch (error) {
       console.error('Failed to generate map:', error);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
   return (
@@ -24,7 +29,7 @@ export const SearchBar = () => {
           <input
             type="text"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={handleChange}
             placeholder="Enter a statistical topic (e.g., population density 2023, GDP per capita)"
             className="w-full px-4 py-2 pl-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 dark:focus:ring-gray-500"
             disabled={loading}

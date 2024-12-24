@@ -18,7 +18,7 @@ export const useMapStore = create<MapStore>((set, get) => ({
   fetchStatisticalData: async (query: string) => {
     const { year, region } = get();
     
-    set({ loading: true, error: null });
+    set({ loading: true, error: null, geoData: null }); // Reset geoData before new search
     
     try {
       const geoData = await generateStatisticalMap(query, year, region);
@@ -26,7 +26,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
     } catch (error) {
       set({ 
         error: error instanceof Error ? error.message : 'Failed to fetch statistical data',
-        loading: false 
+        loading: false,
+        geoData: null
       });
     }
   }
