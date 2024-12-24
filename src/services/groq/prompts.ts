@@ -20,6 +20,7 @@ export const generateStatisticalPrompt = (topic: string, year: number, region: s
   }
   
   Important:
+  - Include EVERY country from the selected region
   - Provide realistic, research-based statistical values
   - Include proper units of measurement
   - Return only valid GeoJSON, no additional text
