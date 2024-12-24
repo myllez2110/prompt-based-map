@@ -1,6 +1,7 @@
 import { getGroqClient } from './groq/client';
 import { generateStatisticalPrompt } from './groq/prompts';
 import { parseGroqResponse } from './groq/parser';
+import { GroqConfigError, GroqClientError, GroqAPIError } from './groq/errors';
 import type { GeoJsonData } from '../types';
 
 export const generateStatisticalMap = async (
@@ -21,11 +22,19 @@ export const generateStatisticalMap = async (
 
     const response = completion.choices[0]?.message?.content;
     if (!response) {
-      throw new Error('No response from AI');
+      throw new GroqAPIError('No response received from GROQ API');
     }
 
     return parseGroqResponse(response);
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : 'Failed to generate statistical map');
+    if (error instanceof GroqConfigError || 
+        error instanceof GroqClientError || 
+        error instanceof GroqAPIError) {
+      throw error;
+    }
+    
+    throw new GroqAPIError(
+      `Failed to generate statistical map: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 };

@@ -1,14 +1,24 @@
 import Groq from 'groq-sdk';
+import { getGroqConfig } from './config';
+import { GroqClientError } from './errors';
+import type { GroqConfig } from './types';
 
 let groqClient: Groq | null = null;
 
-export const getGroqClient = () => {
+export const createGroqClient = (config: GroqConfig): Groq => {
+  try {
+    return new Groq({ apiKey: config.apiKey });
+  } catch (error) {
+    throw new GroqClientError(
+      `Failed to initialize GROQ client: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
+  }
+};
+
+export const getGroqClient = (): Groq => {
   if (!groqClient) {
-    const apiKey = import.meta.env.VITE_GROQ_API_KEY;
-    if (!apiKey) {
-      throw new Error('GROQ API key is not configured');
-    }
-    groqClient = new Groq({ apiKey });
+    const config = getGroqConfig();
+    groqClient = createGroqClient(config);
   }
   return groqClient;
 };
