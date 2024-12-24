@@ -7,7 +7,10 @@ let groqClient: Groq | null = null;
 
 export const createGroqClient = (config: GroqConfig): Groq => {
   try {
-    return new Groq({ apiKey: config.apiKey });
+    return new Groq({
+      apiKey: config.apiKey,
+      dangerouslyAllowBrowser: true
+    });
   } catch (error) {
     throw new GroqClientError(
       `Failed to initialize GROQ client: ${error instanceof Error ? error.message : 'Unknown error'}`
